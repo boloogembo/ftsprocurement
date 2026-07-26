@@ -1,0 +1,103 @@
+@startuml
+allowmixing
+
+title FTS_Procurement_Workflow_Engine
+
+' ==============================
+' CLASSES
+' ==============================
+
+class workflows
+class workflow_steps
+class leadership_assignments
+
+class approval_requests
+class approval_step_instances
+class approval_actions
+
+' ==============================
+' ATTRIBUTES
+' ==============================
+
+workflows : id
+workflows : name
+workflows : denomination_id
+workflows : organisation_level
+
+workflow_steps : id
+workflow_steps : workflow_id
+workflow_steps : step_order
+workflow_steps : step_name
+workflow_steps : approval_mode
+workflow_steps : is_final
+
+leadership_assignments : id
+leadership_assignments : designation
+leadership_assignments : personnel_id
+leadership_assignments : organisation_id
+leadership_assignments : weight
+leadership_assignments : active
+
+approval_requests : id
+approval_requests : workflow_id
+approval_requests : reference_number
+approval_requests : organisation_id
+approval_requests : amount
+approval_requests : status
+approval_requests : current_step_id
+approval_requests : created_by
+approval_requests : created_at
+
+approval_step_instances : id
+approval_step_instances : request_id
+approval_step_instances : step_id
+approval_step_instances : status
+approval_step_instances : started_at
+approval_step_instances : completed_at
+
+approval_actions : id
+approval_actions : request_id
+approval_actions : step_id
+approval_actions : designation
+approval_actions : user_id
+approval_actions : action
+approval_actions : weight
+approval_actions : comment
+approval_actions : action_time
+
+' ==============================
+' RELATIONSHIPS
+' ==============================
+
+workflows --> workflow_steps
+workflows --> approval_requests
+
+workflow_steps --> approval_step_instances
+
+approval_requests --> approval_step_instances
+approval_requests --> approval_actions
+
+workflow_steps --> approval_actions
+
+leadership_assignments --> workflow_steps
+
+' ==============================
+' FLOW (EXTERNAL SYSTEMS)
+' ==============================
+
+rectangle USER
+rectangle FIN
+rectangle COMMS
+rectangle IDENTITY
+
+USER --> approval_requests
+approval_requests --> approval_step_instances
+approval_step_instances --> approval_actions
+approval_actions --> approval_step_instances
+approval_step_instances --> approval_requests
+
+approval_requests --> FIN
+approval_actions --> COMMS
+approval_actions --> IDENTITY
+
+@enduml
