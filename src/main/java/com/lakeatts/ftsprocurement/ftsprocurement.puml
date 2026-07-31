@@ -73,7 +73,6 @@ workflows --> workflow_steps
 workflows --> approval_requests
 
 workflow_steps --> approval_step_instances
-
 approval_requests --> approval_step_instances
 approval_requests --> approval_actions
 

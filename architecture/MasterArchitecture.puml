@@ -1,0 +1,180 @@
+@startuml MasterArchitecture
+!theme plain
+title FTS E-Procurement - Master Architecture
+
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam componentStyle rectangle
+
+actor "Department User" as User
+actor "Approver" as Approver
+actor "Procurement Officer" as Procurement
+actor "Finance Officer" as Finance
+actor "Administrator" as Admin
+
+package "Presentation Layer" {
+
+    component "React Web Portal" as Web
+    component "Flutter Mobile App" as Mobile
+
+}
+
+package "REST API Layer" {
+
+    component WorkflowController
+    component WorkflowStepController
+    component LeadershipAssignmentController
+    component DepartmentProjectController
+    component ProjectBudgetItemController
+    component ApprovalRequestController
+    component ApprovalStepInstanceController
+    component ApprovalVoteController
+    component ApprovalActionController
+
+}
+
+package "Workflow Engine" {
+
+    component Workflow
+    component WorkflowStep
+    component LeadershipAssignment
+
+}
+
+package "Procurement Module" {
+
+    component DepartmentProject
+    component ProjectBudgetItem
+
+}
+
+package "Approval Engine" {
+
+    component ApprovalRequest
+    component ApprovalStepInstance
+    component ApprovalVote
+    component ApprovalAction
+
+}
+
+package "Persistence Layer" {
+
+    database workflow
+    database workflow_steps
+    database leadership_assignments
+    database department_projects
+    database project_budget_items
+    database approval_requests
+    database approval_step_instances
+    database approval_votes
+    database approval_actions
+
+}
+
+cloud "FTS Platform" {
+
+    component "FTS Identity"
+    component "FTS Finance"
+    component "FTS Communications"
+    component "FTS Inventory"
+    component "FTS Reports"
+
+}
+
+User --> Web
+Approver --> Web
+Procurement --> Web
+Finance --> Web
+Admin --> Web
+
+Mobile --> WorkflowController
+Mobile --> ApprovalRequestController
+Mobile --> ApprovalVoteController
+
+Web --> WorkflowController
+Web --> WorkflowStepController
+Web --> LeadershipAssignmentController
+Web --> DepartmentProjectController
+Web --> ProjectBudgetItemController
+Web --> ApprovalRequestController
+Web --> ApprovalStepInstanceController
+Web --> ApprovalVoteController
+Web --> ApprovalActionController
+
+WorkflowController --> Workflow
+WorkflowStepController --> WorkflowStep
+LeadershipAssignmentController --> LeadershipAssignment
+
+DepartmentProjectController --> DepartmentProject
+ProjectBudgetItemController --> ProjectBudgetItem
+
+ApprovalRequestController --> ApprovalRequest
+ApprovalStepInstanceController --> ApprovalStepInstance
+ApprovalVoteController --> ApprovalVote
+ApprovalActionController --> ApprovalAction
+
+Workflow --> workflow
+WorkflowStep --> workflow_steps
+LeadershipAssignment --> leadership_assignments
+
+DepartmentProject --> department_projects
+ProjectBudgetItem --> project_budget_items
+
+ApprovalRequest --> approval_requests
+ApprovalStepInstance --> approval_step_instances
+ApprovalVote --> approval_votes
+ApprovalAction --> approval_actions
+
+Workflow --> WorkflowStep
+WorkflowStep --> LeadershipAssignment
+
+DepartmentProject --> ProjectBudgetItem
+ProjectBudgetItem --> ApprovalRequest
+
+ApprovalRequest --> ApprovalStepInstance
+ApprovalStepInstance --> ApprovalVote
+ApprovalVote --> ApprovalAction
+
+ApprovalAction --> WorkflowStep : Next Step
+
+ApprovalAction --> "FTS Communications"
+ApprovalRequest --> "FTS Finance"
+Workflow --> "FTS Identity"
+DepartmentProject --> "FTS Inventory"
+ApprovalAction --> "FTS Reports"
+
+legend right
+== Procurement Lifecycle ==
+
+1. Create Workflow
+
+2. Configure Workflow Steps
+
+3. Assign Leadership
+
+4. Create Department Project
+
+5. Add Budget Items
+
+6. Submit Approval Request
+
+7. Generate Approval Steps
+
+8. Vote
+
+9. Record Action
+
+10. Next Step or Finish
+
+11. Procurement Processing
+
+12. Goods Receipt
+
+13. Finance Payment
+
+14. Closed
+
+endlegend
+
+@enduml

@@ -1,0 +1,85 @@
+@startuml FrontendNavigation
+!theme plain
+title FTS E-Procurement - Frontend Navigation
+
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor User
+
+rectangle "Login" as Login
+rectangle "Dashboard" as Dashboard
+
+package "Workflow Management" {
+    rectangle "Workflow List" as WorkflowList
+    rectangle "Create Workflow" as CreateWorkflow
+    rectangle "Workflow Details" as WorkflowDetails
+    rectangle "Workflow Steps" as WorkflowSteps
+    rectangle "Leadership Assignment" as LeadershipAssignment
+}
+
+package "Department Projects" {
+    rectangle "Project List" as ProjectList
+    rectangle "Create Project" as CreateProject
+    rectangle "Project Details" as ProjectDetails
+    rectangle "Budget Items" as BudgetItems
+    rectangle "Submit For Approval" as SubmitApproval
+}
+
+package "Approvals" {
+    rectangle "Pending Requests" as PendingRequests
+    rectangle "Approval Details" as ApprovalDetails
+    rectangle "Vote" as Vote
+    rectangle "Completed" as Completed
+    rectangle "Rejected" as Rejected
+    rectangle "Approval History" as History
+}
+
+package "Administration" {
+    rectangle "Departments" as Departments
+    rectangle "Leadership" as Leadership
+    rectangle "Workflow Configuration" as WorkflowConfig
+    rectangle "System Settings" as Settings
+}
+
+package "Reports" {
+    rectangle "Procurement Dashboard" as ProcurementDashboard
+    rectangle "Workflow Report" as WorkflowReport
+    rectangle "Approval Report" as ApprovalReport
+    rectangle "Budget Report" as BudgetReport
+    rectangle "Audit Trail" as AuditTrail
+}
+
+User --> Login
+Login --> Dashboard
+
+Dashboard --> WorkflowList
+Dashboard --> ProjectList
+Dashboard --> PendingRequests
+Dashboard --> Departments
+Dashboard --> ProcurementDashboard
+
+WorkflowList --> CreateWorkflow
+CreateWorkflow --> WorkflowDetails
+WorkflowDetails --> WorkflowSteps
+WorkflowSteps --> LeadershipAssignment
+
+ProjectList --> CreateProject
+CreateProject --> ProjectDetails
+ProjectDetails --> BudgetItems
+BudgetItems --> SubmitApproval
+
+SubmitApproval --> PendingRequests
+
+PendingRequests --> ApprovalDetails
+ApprovalDetails --> Vote
+Vote --> Completed
+Vote --> Rejected
+
+Completed --> History
+Rejected --> History
+
+History --> Dashboard
+
+@enduml

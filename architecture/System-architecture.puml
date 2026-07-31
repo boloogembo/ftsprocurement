@@ -1,0 +1,176 @@
+@startuml 01-SystemArchitecture
+!theme plain
+title FTS E-Procurement - Overall System Architecture
+
+skinparam componentStyle rectangle
+skinparam packageStyle rectangle
+skinparam shadowing false
+left to right direction
+
+actor "Procurement Officer" as Officer
+actor "Department User" as User
+actor "Approver" as Approver
+actor "Finance Officer" as Finance
+actor "Administrator" as Admin
+
+package "Frontend Applications" {
+
+    [FTS Web Portal]
+    [FTS Mobile App]
+
+}
+
+package "REST API Layer" {
+
+    [WorkflowController]
+    [WorkflowStepController]
+    [LeadershipAssignmentController]
+    [DepartmentProjectController]
+    [ProjectBudgetItemController]
+    [ApprovalRequestController]
+    [ApprovalStepInstanceController]
+    [ApprovalVoteController]
+    [ApprovalActionController]
+
+}
+
+package "Business Layer" {
+
+    [WorkflowDAO]
+    [WorkflowStepDAO]
+    [LeadershipAssignmentDAO]
+    [DepartmentProjectDAO]
+    [ProjectBudgetItemDAO]
+    [ApprovalRequestDAO]
+    [ApprovalStepInstanceDAO]
+    [ApprovalVoteDAO]
+    [ApprovalActionDAO]
+
+}
+
+package "Persistence Layer" {
+
+    [WorkflowDAOImpl]
+    [WorkflowStepDAOImpl]
+    [LeadershipAssignmentDAOImpl]
+    [DepartmentProjectDAOImpl]
+    [ProjectBudgetItemDAOImpl]
+    [ApprovalRequestDAOImpl]
+    [ApprovalStepInstanceDAOImpl]
+    [ApprovalVoteDAOImpl]
+    [ApprovalActionDAOImpl]
+
+}
+
+database "PostgreSQL\nfts_procurement" {
+
+    [workflow]
+
+    [workflow_steps]
+
+    [leadership_assignments]
+
+    [department_projects]
+
+    [project_budget_items]
+
+    [approval_requests]
+
+    [approval_step_instances]
+
+    [approval_votes]
+
+    [approval_actions]
+
+}
+
+cloud "Future Integrations" {
+
+    [FTS Identity]
+
+    [FTS Finance]
+
+    [FTS Communications]
+
+    [Inventory]
+
+    [Document Management]
+
+}
+
+Officer --> [FTS Web Portal]
+User --> [FTS Web Portal]
+Approver --> [FTS Web Portal]
+Finance --> [FTS Web Portal]
+Admin --> [FTS Web Portal]
+
+[FTS Mobile App] --> [WorkflowController]
+[FTS Mobile App] --> [ApprovalRequestController]
+[FTS Mobile App] --> [ApprovalVoteController]
+
+[FTS Web Portal] --> [WorkflowController]
+[FTS Web Portal] --> [WorkflowStepController]
+[FTS Web Portal] --> [LeadershipAssignmentController]
+[FTS Web Portal] --> [DepartmentProjectController]
+[FTS Web Portal] --> [ProjectBudgetItemController]
+[FTS Web Portal] --> [ApprovalRequestController]
+[FTS Web Portal] --> [ApprovalStepInstanceController]
+[FTS Web Portal] --> [ApprovalVoteController]
+[FTS Web Portal] --> [ApprovalActionController]
+
+[WorkflowController] --> [WorkflowDAO]
+[WorkflowStepController] --> [WorkflowStepDAO]
+[LeadershipAssignmentController] --> [LeadershipAssignmentDAO]
+[DepartmentProjectController] --> [DepartmentProjectDAO]
+[ProjectBudgetItemController] --> [ProjectBudgetItemDAO]
+[ApprovalRequestController] --> [ApprovalRequestDAO]
+[ApprovalStepInstanceController] --> [ApprovalStepInstanceDAO]
+[ApprovalVoteController] --> [ApprovalVoteDAO]
+[ApprovalActionController] --> [ApprovalActionDAO]
+
+[WorkflowDAO] --> [WorkflowDAOImpl]
+[WorkflowStepDAO] --> [WorkflowStepDAOImpl]
+[LeadershipAssignmentDAO] --> [LeadershipAssignmentDAOImpl]
+[DepartmentProjectDAO] --> [DepartmentProjectDAOImpl]
+[ProjectBudgetItemDAO] --> [ProjectBudgetItemDAOImpl]
+[ApprovalRequestDAO] --> [ApprovalRequestDAOImpl]
+[ApprovalStepInstanceDAO] --> [ApprovalStepInstanceDAOImpl]
+[ApprovalVoteDAO] --> [ApprovalVoteDAOImpl]
+[ApprovalActionDAO] --> [ApprovalActionDAOImpl]
+
+[WorkflowDAOImpl] --> [workflow]
+[WorkflowStepDAOImpl] --> [workflow_steps]
+[LeadershipAssignmentDAOImpl] --> [leadership_assignments]
+[DepartmentProjectDAOImpl] --> [department_projects]
+[ProjectBudgetItemDAOImpl] --> [project_budget_items]
+[ApprovalRequestDAOImpl] --> [approval_requests]
+[ApprovalStepInstanceDAOImpl] --> [approval_step_instances]
+[ApprovalVoteDAOImpl] --> [approval_votes]
+[ApprovalActionDAOImpl] --> [approval_actions]
+
+[ApprovalRequestDAOImpl] --> [FTS Finance]
+[ApprovalActionDAOImpl] --> [FTS Communications]
+[WorkflowDAOImpl] --> [FTS Identity]
+[DepartmentProjectDAOImpl] --> [Inventory]
+[ApprovalActionDAOImpl] --> [Document Management]
+
+note bottom
+FTS Procurement follows a layered architecture.
+
+Presentation Layer
+      ↓
+REST Controllers
+      ↓
+DAO Interfaces
+      ↓
+DAO Implementations
+      ↓
+PostgreSQL Database
+
+This diagram intentionally omits DTOs,
+RowMappers and workflow logic.
+Those are documented in the subsequent
+architecture diagrams.
+end note
+
+@enduml

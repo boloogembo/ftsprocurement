@@ -1,0 +1,37 @@
+com.lakeatts.fts.procurement
+│
+├── workflow
+│   ├── WorkflowController
+│   ├── WorkflowDAO
+│   ├── WorkflowDAOImpl
+│   ├── WorkflowDTO
+│   ├── WorkflowRowMapper
+│   └── workflow
+│
+├── workflowstep
+│   ├── WorkflowStepController
+│   ├── WorkflowStepDAO
+│   ├── WorkflowStepDAOImpl
+│   ├── WorkflowStepDTO
+│   ├── WorkflowStepRowMapper
+│   └── workflow_steps
+│
+├── leadershipassignment
+│   ├── LeadershipAssignmentController
+│   ├── LeadershipAssignmentDAO
+│   ├── LeadershipAssignmentDAOImpl
+│   ├── LeadershipAssignmentDTO
+│   ├── LeadershipAssignmentRowMapper
+│   └── leadership_assignments
+│
+├── departmentproject
+│
+├── projectbudgetitem
+│
+├── approvalrequest
+│
+├── approvalstepinstance
+│
+├── approvalvote
+│
+└── approvalaction

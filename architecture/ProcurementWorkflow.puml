@@ -1,0 +1,98 @@
+@startuml ProcurementWorkflow
+!theme plain
+title FTS E-Procurement - Procurement Workflow
+
+start
+
+:User Login;
+
+:Select Department;
+
+:Create Department Project;
+
+:Add Project Budget Items;
+
+if (Budget Complete?) then (Yes)
+else (No)
+    :Continue Adding Budget Items;
+endif
+
+:Submit Procurement Request;
+
+:Create Approval Request;
+
+:Load Workflow;
+
+:Generate Approval Step Instances;
+
+repeat
+
+:Assign Current Approver;
+
+:Approver Reviews Request;
+
+if (Decision?) then (Approve)
+
+    :Record Approval Vote;
+
+    :Create Approval Action;
+
+    if (More Workflow Steps?) then (Yes)
+
+        :Move to Next Workflow Step;
+
+    else (No)
+
+        :Mark Request Approved;
+
+        break
+
+    endif
+
+else (Reject)
+
+    :Record Rejection Vote;
+
+    :Create Rejection Action;
+
+    :Notify Request Owner;
+
+    stop
+
+endif
+
+repeat while (Pending Approval?)
+
+:Generate Purchase Request;
+
+:Notify Procurement Officer;
+
+:Procurement Processing;
+
+:Generate Purchase Order;
+
+:Receive Goods;
+
+:Goods Inspection;
+
+if (Goods Accepted?) then (Yes)
+
+    :Generate Goods Receipt;
+
+    :Forward Invoice;
+
+    :Finance Processing;
+
+    :Payment;
+
+    :Close Procurement Request;
+
+else (Rejected)
+
+    :Return Goods;
+
+endif
+
+stop
+
+@enduml
